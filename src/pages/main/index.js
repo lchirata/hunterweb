@@ -3,6 +3,10 @@ import api from '../../services/api';
 
 export default class Main extends Component {
 
+    state={
+        products: []
+    };
+
     //metodo executado assim que o componente foi exibido em tela
     componentDidMount() {
         this.loadProducts();
@@ -11,10 +15,17 @@ export default class Main extends Component {
     loadProducts = async () => {
         const response = await api.get('/products');
 
-        console.log(response.data.docs);
-    }
+        this.setState({ products: response.data.docs });
+
+        };
 
     render() {
-        return <h1>hello word</h1>
+        return (
+            <div className="product-list">
+                {this.state.products.map(product =>(
+                    <h2 key={product._id}>{product.title}</h2>
+                ))}
+            </div>
+        );
     }
 }
